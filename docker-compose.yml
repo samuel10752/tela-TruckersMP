@@ -1,0 +1,10 @@
+version: "3.8"
+
+services:
+  web:
+    image: php:8.3-apache
+    container_name: Tela-TruckersMP
+    ports:
+      - "80:80"
+    volumes:
+      - ./:/var/www/html
