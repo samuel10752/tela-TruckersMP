@@ -8,13 +8,13 @@
         content="width=device-width, height=device-height, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta charset="utf-8">
-    <link rel="icon" href="images/favicon.ico" type="image/x-icon">
+    <link rel="icon" href="src/images/favicon.ico" type="image/x-icon">
     <!-- Stylesheets-->
     <link rel="stylesheet" type="text/css"
         href="//fonts.googleapis.com/css?family=Poppins:400,500,600%7CTeko:300,400,500%7CMaven+Pro:500">
-    <link rel="stylesheet" href="css/bootstrap.css">
-    <link rel="stylesheet" href="css/fonts.css">
-    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="src/css/bootstrap.css">
+    <link rel="stylesheet" href="src/css/fonts.css">
+    <link rel="stylesheet" href="src/css/style.css">
 
 </head>
 
@@ -78,7 +78,7 @@
 
             <?php
 
-                include_once __DIR__ . '/src/Events';
+                include_once __DIR__ . '/src/API/Events';
 
             ?>
 
@@ -87,7 +87,7 @@
         <!-- See all services-->
         <?php
 
-                include_once __DIR__ . '/src/EventsRandom';
+                include_once __DIR__ . '/src/API/EventsRandom';
             
             ?>
 
@@ -291,8 +291,8 @@
         <!-- Global Mailform Output-->
         <div class="snackbars" id="form-output-global"></div>
         <!-- Javascript-->
-        <script src="js/core.min.js"></script>
-        <script src="js/script.js"></script>
+        <script src="src/js/core.min.js"></script>
+        <script src="src/js/script.js"></script>
         <!-- coded by Himic-->
 </body>
 
