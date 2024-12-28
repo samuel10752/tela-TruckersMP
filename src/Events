@@ -99,16 +99,7 @@ if ($data && isset($data['response']) && is_array($data['response'])) {
 
     // Final do Swiper
     echo '</div>
-            <!-- Swiper Pagination-->
-            <div class="swiper-pagination__module">
-              <div class="swiper-pagination__fraction">
-                <span class="swiper-pagination__fraction-index">00</span>
-                <span class="swiper-pagination__fraction-divider">/</span>
-                <span class="swiper-pagination__fraction-count">00</span>
-              </div>
-              <div class="swiper-pagination__divider"></div>
-              <div class="swiper-pagination"></div>
-            </div>
+
         </section>';
 
 } else {
