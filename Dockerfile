@@ -6,7 +6,7 @@ FROM php:8.3-apache
 # RUN docker-php-ext-install mysqli pdo pdo_mysql
 
 # Copiar o arquivo index.php para dentro do diretório padrão do Apache
-COPY index /var/www/html/
+COPY home /var/www/html/
 COPY src/Servers /var/www/html/
 COPY src/Events /var/www/html/
 
