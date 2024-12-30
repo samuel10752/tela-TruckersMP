@@ -1,0 +1,154 @@
+<?php
+// events.php (ou index.php)
+
+// 1) Obter dados da API
+$url  = "https://api.truckersmp.com/v2/events";
+$json = @file_get_contents($url);
+$data = json_decode($json, true);
+
+// 2) Verificar se existe 'response' e se é array
+if ($data && isset($data['response']) && is_array($data['response'])) {
+
+    // Extrair cada array (se existirem), ou usar arrays vazios
+    $featured = $data['response']['featured'] ?? [];
+    $upcoming = $data['response']['upcoming'] ?? [];
+    $recent   = $data['response']['recent']   ?? [];
+
+    // 3) Combinar todos em um só array
+    $allEvents = array_merge($featured, $upcoming, $recent);
+
+    // Se, ao final, $allEvents estiver vazio, significa que não há nenhum evento
+    if (count($allEvents) === 0) {
+        echo "<p>Não há nenhum evento (featured, upcoming ou recent) no momento.</p>";
+        return;
+    }
+
+    // Início do HTML:
+    // ---------------------------------------------------------------------------------
+    // Aqui você pode ter seu <html>, <head> etc. ou abrir um echo se preferir.
+    // Vou inserir um estilo interno para demonstrar o layout de 5 colunas (Flexbox).
+
+    echo '
+    <style>
+      /* Container de 5 colunas */
+      .five-columns-container {
+        display: flex;
+        flex-wrap: wrap;        /* Permite quebra de linha em telas menores */
+        gap: 20px;              /* Espaço entre os itens */
+        justify-content: center;/* Centraliza as colunas */
+        margin: 40px auto;      /* Margem vertical */
+        max-width: 1400px;      /* Largura máxima */
+      }
+    
+      /* Estilo de cada item (coluna) */
+      .five-columns-item {
+        flex: 0 0 calc(20% - 20px); /* 20% da largura para 5 colunas */
+        box-sizing: border-box;
+        position: relative;
+        min-height: 300px;
+        color: #fff;
+        border-radius: 6px;
+        overflow: hidden; /* Para bordas arredondadas não vazar */
+      }
+    
+      /* Conteúdo sobreposto */
+      .five-columns-item > div {
+        background: rgba(0, 0, 0, 0.5); /* Fundo semi-transparente */
+        padding: 20px;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-end; /* Alinha conteúdo no fim */
+      }
+    
+      /* Botão de detalhes */
+      .button-ujarak {
+        display: inline-block;
+        padding: 10px 20px;
+        background: #576eff;
+        color: #fff;
+        text-decoration: none;
+        border-radius: 4px;
+        text-align: center;
+        transition: background 0.3s;
+      }
+      .button-ujarak:hover {
+        background: #4655cc;
+      }
+    
+      /* Responsividade */
+      @media (max-width: 1200px) {
+        .five-columns-item {
+          flex: 0 0 calc(25% - 20px); /* 4 colunas em telas grandes */
+        }
+      }
+    
+      @media (max-width: 992px) {
+        .five-columns-item {
+          flex: 0 0 calc(33.33% - 20px); /* 3 colunas em tablets */
+        }
+      }
+    
+      @media (max-width: 768px) {
+        .five-columns-item {
+          flex: 0 0 calc(50% - 20px); /* 2 colunas em tablets menores */
+        }
+      }
+    
+      @media (max-width: 576px) {
+        .five-columns-item {
+          flex: 0 0 calc(100% - 20px); /* 1 coluna em celulares */
+        }
+      }
+    </style>
+    ';
+
+    // Aqui você pode abrir a section que desejar (por exemplo, a sua "section-sm section-first bg-default")
+    echo '
+    <section class="section section-sm section-first bg-default text-center">
+      <div class="container">
+        <h3>Novidade</h3>
+        <div class="five-columns-container">
+    ';
+    
+    foreach ($allEvents as $event) {
+        // Campos principais
+        $eventName = $event["name"]   ?? "Sem nome";
+        $banner    = $event["banner"] ?? "/public/images/Banner/Eventos/ets-ats.jpg";
+        $eventUrl  = $event["url"]    ?? "#";
+    
+        // Coluna de evento
+        echo '
+          <div class="five-columns-item"
+               style="
+                 background-image: url(\''.htmlspecialchars($banner).'\');
+                 background-size: cover;
+                 background-position: center;
+                 background-repeat: no-repeat;
+               ">
+            <div>
+              <h3 class="box-icon-modern-big-title" style="margin: 0;">
+                '.htmlspecialchars($eventName).'
+              </h3>
+              <div class="box-icon-modern-decor" style="margin: 10px auto;"></div>
+              <a class="button-ujarak" 
+                 href="'.htmlspecialchars($eventUrl).'" 
+                 target="_blank">
+                Ver Detalhes
+              </a>
+            </div>
+          </div>
+        ';
+    }
+    
+    echo '
+        </div>
+      </div>
+    </section>
+    ';
+
+} else {
+    // Caso a API não tenha dados ou deu erro
+    echo "<p>Não foi possível obter os eventos ou não há eventos disponíveis no momento.</p>";
+}
+?>

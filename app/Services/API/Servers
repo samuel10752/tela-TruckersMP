@@ -1,0 +1,26 @@
+<?php
+// URL da API
+$url = "https://api.truckersmp.com/v2/servers";
+
+// Obter dados da API
+$json = file_get_contents($url);
+
+// Converter JSON em array associativo
+$servers = json_decode($json, true);
+
+// Verificar se a requisição foi bem-sucedida
+if (isset($servers['response']) && is_array($servers['response'])) {
+    // Percorrer cada servidor
+    foreach ($servers['response'] as $server) {
+        echo "<strong>Nome do servidor:</strong> " . $server['name'] . "<br />";
+        echo "<strong>Jogadores online:</strong> " . $server['players'] . " / " . $server['maxplayers'] . "<br />";
+        echo "<strong>Game:</strong> " . $server['game'] . "<br />";
+        echo "<strong>Status:</strong> " . ($server['online'] ? "Online" : "Offline") . "<br />";
+        echo "<hr />";
+    }
+} else {
+    // Caso não tenha retornado dados
+    echo "Não foi possível obter os dados da API.";
+}
+?>
+

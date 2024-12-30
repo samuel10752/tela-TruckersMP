@@ -1,0 +1,49 @@
+<?php
+// URL do Feed RSS
+$rss_url = "https://truckersmp.com/blog/rss";
+
+try {
+    // Carrega o conteúdo do RSS
+    $rss_content = file_get_contents($rss_url);
+
+    if ($rss_content === false) {
+        throw new Exception("Não foi possível acessar o feed RSS.");
+    }
+
+    // Carrega o XML do RSS com SimpleXML
+    $rss_feed = new SimpleXMLElement($rss_content);
+
+    // Exibe o título do blog
+    echo "<h1 style='font-family: Arial, sans-serif; color: #333;'>" . htmlspecialchars($rss_feed->channel->title) . "</h1>";
+
+    echo "<ul style='list-style-type: none; padding: 0;'>";
+    foreach ($rss_feed->channel->item as $item) {
+        echo "<li style='margin-bottom: 40px; font-family: Arial, sans-serif;'>";
+        echo "<h2><a href='" . htmlspecialchars($item->link) . "' target='_blank' style='font-size: 1.5em; text-decoration: none; color: #007bff;'>";
+        echo htmlspecialchars($item->title);
+        echo "</a></h2>";
+        echo "<small style='color: gray;'>" . date("d/m/Y H:i", strtotime($item->pubDate)) . "</small><br>";
+
+        // Renderiza a descrição com imagens e formatações
+        if (isset($item->description)) {
+            echo "<div style='margin-top: 10px;'>";
+            echo $item->description; // Descrição do item (pode incluir imagens)
+            echo "</div>";
+        }
+
+        // Verifica por <content:encoded> para conteúdo mais detalhado
+        $namespaces = $item->getNamespaces(true);
+        if (isset($namespaces['content']) && isset($item->children($namespaces['content'])->encoded)) {
+            $content = $item->children($namespaces['content'])->encoded;
+            echo "<div style='margin-top: 10px;'>";
+            echo $content; // Renderiza o conteúdo completo (HTML formatado)
+            echo "</div>";
+        }
+
+        echo "</li>";
+    }
+    echo "</ul>";
+} catch (Exception $e) {
+    echo "<p style='color: red; font-family: Arial, sans-serif;'>Erro: " . $e->getMessage() . "</p>";
+}
+?>
