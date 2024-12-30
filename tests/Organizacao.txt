@@ -11,7 +11,7 @@
 
 
 
-/project-root
+/Projeto
 ├── /app                (Contém toda a lógica principal do aplicativo.)
 │   ├── /Controllers    (Controladores que lidam com as requisições HTTP e determinam qual lógica será executada.)
 │   ├── /Models         (Classes relacionadas ao banco de dados e manipulação de dados.)
@@ -20,24 +20,12 @@
 │   └── /Services       (Classes para lógica de negócio mais complexa ou integração com APIs externas.)
 ├── /config             (Arquivos de configuração, como conexão com o banco de dados, constantes globais, e chaves API.)
 ├── /public             (Contém arquivos acessíveis publicamente, como o ponto de entrada (index.php), CSS, JavaScript e imagens.)
-│   ├── /css            ()
-│   ├── /js             ()
-│   ├── /images         ()
-│   └── index.php       ()
+│   ├── /css            
+│   ├── /js             
+│   ├── /images         
 ├── /routes             (Define as rotas da aplicação (se você estiver usando um framework ou uma abordagem MVC).)
 ├── /storage            (Para armazenamento de dados temporários ou persistentes, como logs, cache, ou uploads.)
-│   ├── /logs           ()
-│   ├── /cache          ()
+│   ├── /logs           
+│   ├── /cache          
 ├── /vendor             (Diretório gerado pelo Composer, contendo dependências de terceiros.)
 └── /tests              (Para arquivos de teste, incluindo unitários, de integração, ou funcionais.)
-
-/Views
-├── /layouts
-│   └── main.php      (layout principal)
-├── /home
-│   └── home.php     (view para a página inicial)
-├── /users
-│   ├── index.php     (lista de usuários)
-│   ├── edit.php      (formulário para editar um usuário)
-│   └── create.php    (formulário para criar um novo usuário)
-└── error.php         (página para erros)
