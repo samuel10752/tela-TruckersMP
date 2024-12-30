@@ -254,7 +254,7 @@
                 <div class="container-fluid">
                     <div class="footer-minimal-inset oh">
                         <ul class="footer-list-category-2">
-                            <li><a href="#">Sobre esse Site</a></li>
+                            <li><a href="/About">Sobre</a></li>
                             <li><a href="#">Downloads</a></li>
                             <li><a href="#">Blog</a></li>
                             <li><a href="#">Status dos Servidores</a></li>
