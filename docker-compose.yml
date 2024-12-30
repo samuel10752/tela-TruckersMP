@@ -2,7 +2,9 @@ version: "3.8"
 
 services:
   web:
-    image: php:8.3-apache
+    build:
+      context: .
+      dockerfile: Dockerfile
     container_name: Tela-TruckersMP
     ports:
       - "80:80"
