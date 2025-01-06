@@ -21510,3 +21510,92 @@ disabled look for disabled choices in the results dropdown
 .modal-body {
 	padding: 29px 30px 35px;
 }
+
+ /* Estilização da seção "Sobre o Site" */
+ #about {
+	background-color: #222;
+	padding: 40px 20px;
+	border-radius: 8px;
+	margin: 20px auto;
+	box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+	font-family: 'Poppins', sans-serif;
+	max-width: 800px;
+	text-align: center;
+}
+
+#about h2, #about h3 {
+	font-size: 28px;
+	font-weight: 600;
+	color: #ffffff;
+	margin-bottom: 20px;
+	text-align: center;
+}
+
+#about p {
+	font-size: 16px;
+	line-height: 1.8;
+	color: #ffffff;
+	margin-bottom: 20px;
+	text-align: justify;
+}
+
+#about ul {
+	padding-left: 20px;
+	margin: 20px 0;
+	list-style: none;
+}
+
+#about ul li {
+	font-size: 16px;
+	line-height: 1.6;
+	color: #ffffff;
+	margin-bottom: 10px;
+	text-align: justify;
+	position: relative;
+}
+
+/* Linha separadora */
+#about h3::after {
+	content: "";
+	display: block;
+	width: 100px;
+	height: 2px;
+	background-color: #1a4eff;
+	margin: 10px auto 20px auto;
+}
+
+/* Linha separadora */
+#about h2::after {
+	content: "";
+	display: block;
+	width: 100px;
+	height: 2px;
+	background-color: #1a4eff;
+	margin: 10px auto 20px auto;
+}
+
+/* Linha separadora */
+#about h2::after {
+	content: "";
+	display: block;
+	width: 100px;
+	height: 2px;
+	background-color: #1a4eff;
+	margin: 10px auto 20px auto;
+}
+
+/* Estilo responsivo */
+@media (max-width: 768px) {
+	#about {
+		padding: 20px 10px;
+	}
+
+	#about h2, #about h3 {
+		font-size: 24px;
+	}
+
+	#about p, #about ul li {
+		font-size: 14px;
+	}
+}
+
