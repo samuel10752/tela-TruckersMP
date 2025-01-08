@@ -1451,3 +1451,10 @@
 	} );
 }());
 
+// Resolvido o problema de não carregar pagina anterior
+window.addEventListener('pageshow', function (event) {
+    if (event.persisted) {
+        window.location.reload();
+    }
+});
+
