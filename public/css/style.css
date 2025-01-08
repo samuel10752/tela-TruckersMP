@@ -144,7 +144,7 @@ h6,
 	text-transform: capitalize;
 	letter-spacing: .024em;
 	word-spacing: .05em;
-	
+
 }
 
 h1 a,
@@ -15866,37 +15866,50 @@ html.rd-navbar-fixed-linked .page-header {
 }
 
 .swiper-slide h1 {
-    font-size: 3rem; /* Aumenta o tamanho do título */
-    color: #fefefe; /* Cor branca para contraste */
-    text-shadow: 20px 2px 14px rgba(0, 0, 0, 0.7); /* Adiciona uma sombra para destacá-lo */
-    font-weight: bold;
-    margin-bottom: 1rem;
+	font-size: 3rem;
+	/* Aumenta o tamanho do título */
+	color: #fefefe;
+	/* Cor branca para contraste */
+	text-shadow: 20px 2px 14px rgba(0, 0, 0, 0.7);
+	/* Adiciona uma sombra para destacá-lo */
+	font-weight: bold;
+	margin-bottom: 1rem;
 }
 
 .swiper-slide p {
-    font-size: 1.25rem; /* Ajusta o tamanho do texto */
-    color: #fefefe; /* Cor clara */
-    text-shadow: 10px 1px 10px rgba(0, 0, 0, 0.6); /* Sombra para destaque */
-    line-height: 1.6; /* Melhor espaçamento entre linhas */
-    margin-bottom: 1rem; /* Espaçamento entre parágrafos */
+	font-size: 1.25rem;
+	/* Ajusta o tamanho do texto */
+	color: #fefefe;
+	/* Cor clara */
+	text-shadow: 10px 1px 10px rgba(0, 0, 0, 0.6);
+	/* Sombra para destaque */
+	line-height: 1.6;
+	/* Melhor espaçamento entre linhas */
+	margin-bottom: 1rem;
+	/* Espaçamento entre parágrafos */
 }
 
 .swiper-slide a.button {
-    background-color: #6689ff; /* Cor chamativa para o botão */
-    border: none;
-    padding: 10px 20px;
-    font-size: 1rem;
-    font-weight: bold;
-    text-transform: uppercase;
-    color: #ffffff;
-    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2); /* Destaque para o botão */
-    transition: all 0.3s ease;
+	background-color: #6689ff;
+	/* Cor chamativa para o botão */
+	border: none;
+	padding: 10px 20px;
+	font-size: 1rem;
+	font-weight: bold;
+	text-transform: uppercase;
+	color: #ffffff;
+	box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
+	/* Destaque para o botão */
+	transition: all 0.3s ease;
 }
 
 .swiper-slide a.button:hover {
-    background-color: #6689ff; /* Cor mais escura no hover */
-    box-shadow: 0px 6px 8px rgba(0, 0, 0, 0.4); /* Efeito no hover */
-    transform: scale(1.05); /* Leve zoom no hover */
+	background-color: #6689ff;
+	/* Cor mais escura no hover */
+	box-shadow: 0px 6px 8px rgba(0, 0, 0, 0.4);
+	/* Efeito no hover */
+	transform: scale(1.05);
+	/* Leve zoom no hover */
 }
 
 
@@ -16308,7 +16321,7 @@ html.rd-navbar-fixed-linked .page-header {
 .swiper-slider-classic {
 	max-height: 450px;
 	min-height: 350px;
-	
+
 }
 
 .swiper-slider-classic.swiper-container-horizontal {
@@ -21511,8 +21524,8 @@ disabled look for disabled choices in the results dropdown
 	padding: 29px 30px 35px;
 }
 
- /* Estilização da seção "Sobre o Site" */
- #about {
+/* Estilização da seção "Sobre o Site" */
+#about {
 	background-color: #222;
 	padding: 40px 20px;
 	border-radius: 8px;
@@ -21523,7 +21536,8 @@ disabled look for disabled choices in the results dropdown
 	text-align: center;
 }
 
-#about h2, #about h3 {
+#about h2,
+#about h3 {
 	font-size: 28px;
 	font-weight: 600;
 	color: #ffffff;
@@ -21590,12 +21604,121 @@ disabled look for disabled choices in the results dropdown
 		padding: 20px 10px;
 	}
 
-	#about h2, #about h3 {
+	#about h2,
+	#about h3 {
 		font-size: 24px;
 	}
 
-	#about p, #about ul li {
+	#about p,
+	#about ul li {
 		font-size: 14px;
 	}
+}
+
+/* usado para arquivo Server para estilisar */
+header h1 {
+	font-size: 20px;
+}
+
+nav {
+	display: flex;
+	gap: 20px;
+}
+
+nav a {
+	color: #ffffff;
+	text-decoration: none;
+	font-size: 16px;
+}
+
+/* Container */
+.container {
+	max-width: 1200px;
+	margin: 0 auto;
+	padding: 20px;
+}
+
+/* Game Time */
+#game-time {
+	font-size: 22px;
+	text-align: center;
+	margin-bottom: 20px;
+	color: #f1c40f;
+}
+
+/* Server Table */
+.server-table {
+	width: 100%;
+	border-collapse: collapse;
+	margin-bottom: 20px;
+	background: #1c1c1c;
+	color: #ffffff;
+	border: 1px solid #2d3436;
+}
+
+.server-table th,
+.server-table td {
+	padding: 12px 15px;
+	text-align: center;
+	border: 1px solid #2d3436;
+}
+
+.server-table th {
+	background-color: #0f8fee;
+	font-size: 16px;
+}
+
+.server-table tr:nth-child(even) {
+	background-color: #181818;
+}
+
+.server-table tr:hover {
+	background-color: #2c2c2c;
+}
+
+/* Totals Section */
+.totals {
+	text-align: center;
+	margin: 20px 0;
+}
+
+.totals h3 {
+	margin: 10px 0;
+	font-size: 18px;
+}
+
+/* Icons */
+.icon {
+	font-size: 18px;
+	margin-right: 5px;
+}
+
+.icon-enabled {
+	color: #2ecc71;
+	/* Green */
+}
+
+.icon-disabled {
+	color: #e74c3c;
+	/* Red */
+}
+
+/* Player Stats */
+.stats {
+	display: flex;
+	justify-content: space-around;
+	text-align: center;
+	margin-top: 20px;
+	gap: 20px;
+}
+
+.stats div {
+	background: #1e272e;
+	color: #ffffff;
+	padding: 15px;
+	border-radius: 8px;
+	width: 30%;
+	box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+	font-size: 18px;
 }
 
