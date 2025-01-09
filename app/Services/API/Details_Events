@@ -1,0 +1,100 @@
+<?php
+// Verificar se o ID foi passado na URL
+if (!isset($_GET['id']) || !is_numeric($_GET['id'])) {
+    echo "<p>ID do evento inválido.</p>";
+    exit;
+}
+
+// Capturar o ID do evento
+$eventId = intval($_GET['id']);
+$url = "https://api.truckersmp.com/v2/events/{$eventId}";
+$json = @file_get_contents($url);
+$data = json_decode($json, true);
+
+// Verificar se os dados do evento foram retornados
+if ($data && isset($data['response'])) {
+    $event = $data['response'];
+
+    // CAMPOS PRINCIPAIS
+    $eventName = htmlspecialchars($event['name'] ?? 'Evento Desconhecido');
+    $banner = htmlspecialchars($event['banner'] ?? '/default-banner.jpg');
+    $game = htmlspecialchars($event['game'] ?? 'Game Desconhecido');
+    $language = htmlspecialchars($event['language'] ?? 'Idioma não especificado');
+    $departureLoc = htmlspecialchars($event['departure']['location'] ?? 'Sem localização de partida');
+    $departureCity = htmlspecialchars($event['departure']['city'] ?? 'Sem cidade de partida');
+    $arriveLoc = htmlspecialchars($event['arrive']['location'] ?? 'Sem localização de destino');
+    $arriveCity = htmlspecialchars($event['arrive']['city'] ?? 'Sem cidade de destino');
+    $startDate = htmlspecialchars($event['meetup_at'] ?? 'Sem data/hora');
+    $eventOrganizer = htmlspecialchars($event['organizer'] ?? 'Desconhecido');
+    $description = nl2br(htmlspecialchars($event['description'] ?? 'Sem descrição.'));
+} else {
+    echo "<p>Detalhes do evento não encontrados.</p>";
+    exit;
+}
+
+// Estilização e exibição dos detalhes do evento
+echo '
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Detalhes do Evento - ' . $eventName . '</title>
+    <style>
+
+        .event-banner {
+            width: 100%;
+            height: 400px;
+            background-image: url("' . $banner . '");
+            background-size: cover;
+            background-position: center;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+        .content {
+            text-align: center;
+        }
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+        }
+        p {
+            font-size: 1rem;
+            line-height: 1.6;
+            margin: 10px 0;
+        }
+        .button-ujarak {
+            display: inline-block;
+            padding: 10px 20px;
+            background: #576eff;
+            color: #fff;
+            text-decoration: none;
+            border-radius: 4px;
+            text-align: center;
+            transition: background 0.3s;
+        }
+        .button-ujarak:hover {
+            background: #4655cc;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="event-banner"></div>
+        <div class="content">
+            <h1>' . $eventName . '</h1>
+            <p><strong>Jogo:</strong> ' . $game . '</p>
+            <p><strong>Idioma:</strong> ' . $language . '</p>
+            <p><strong>Partida:</strong> ' . $departureCity . ' (' . $departureLoc . ')</p>
+            <p><strong>Destino:</strong> ' . $arriveCity . ' (' . $arriveLoc . ')</p>
+            <p><strong>Hora do encontro:</strong> ' . $startDate . '</p>
+            <p><strong>Organizador:</strong> ' . $eventOrganizer . '</p>
+            <p><strong>Descrição:</strong></p>
+            <p>' . $description . '</p>
+            <a href="Events_Detail" class="button-ujarak">Voltar para Eventos</a>
+        </div>
+    </div>
+</body>
+</html>
+';
+?>
