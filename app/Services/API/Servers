@@ -50,9 +50,9 @@ if (isset($servers['response']) && is_array($servers['response'])) {
             <th>Colisão</th>
             <th>Carros para Jogadores</th>
             <th>Carros de polícia</th>
-            <th>AFK Enabled</th>
+            <th>AFK Habilitado</th>
             <th>Eventos</th>
-            <th>Evento especial</th>
+            <th>Evento Especial</th>
           </tr>";
     foreach ($servers['response'] as $server) {
         $collisions = $server['collisions'] ? "<i class='fas fa-exclamation-circle icon icon-enabled'></i>" : "<i class='fas fa-times-circle icon icon-disabled'></i>";
