@@ -15,7 +15,6 @@ if ($data && isset($data['response']) && is_array($data['response'])) {
     $recent   = $data['response']['recent']   ?? [];
 
     // 3) Combinar todos em um só array
-    //    Você pode ordenar manualmente se quiser, mas aqui apenas concatenamos.
     $allEvents = array_merge($featured, $upcoming, $recent);
 
     // Se, ao final, $allEvents estiver vazio, significa que não há nenhum evento
@@ -35,21 +34,26 @@ if ($data && isset($data['response']) && is_array($data['response'])) {
 
     // 4) Loop em todos os eventos
     foreach ($allEvents as $event) {
+        // Verificar se o ID do evento está definido e válido
+        if (isset($event['id']) && is_numeric($event['id'])) {
+            $eventId = intval($event['id']); // Garantir que seja um número inteiro
+        } else {
+            continue; // Ignorar eventos sem ID válido
+        }
+
         // CAMPOS PRINCIPAIS
         $eventName   = $event['name']                   ?? 'Sem nome';
         $banner      = $event['banner']                 ?? '/public/images/Banner/Eventos/ets-ats.jpg';
-        // NOVOS CAMPOS
-        $game        = $event['game']                    ?? 'Game Desconhecido';
+        $game        = $event['game']                   ?? 'Game Desconhecido';
         $language    = $event['language']               ?? 'No language';
         $departureLoc= $event['departure']['location']   ?? 'Sem loc. partida';
         $departureCity = $event['departure']['city']     ?? 'Sem cidade partida';
         $arriveLoc   = $event['arrive']['location']      ?? 'Sem loc. destino';
         $arriveCity  = $event['arrive']['city']          ?? 'Sem cidade destino';
-        // Meetup ou Start
-        // - Dependendo da API, um evento “recent” pode não ter "meetup_at"
-        //   então use ?? para evitar avisos
         $startDate   = $event['meetup_at']              ?? '(Sem data/hora)';
-        $eventUrl    = $event['url']              ?? '#';
+
+        // Construir a URL de detalhes usando o ID
+        $eventUrl    = "/Events_Detail";
 
         echo '<div class="swiper-slide" data-slide-bg="'.htmlspecialchars($banner).'">
                 <div class="swiper-slide-caption section-md">
@@ -87,8 +91,7 @@ if ($data && isset($data['response']) && is_array($data['response'])) {
                     <a class="button button-primary button-ujarak"
                        href="'.htmlspecialchars($eventUrl).'"
                        data-caption-animate="fadeInUp"
-                       data-caption-delay="200"
-                       target="_blank">
+                       data-caption-delay="200">
                       Ver detalhes
                     </a>
 
