@@ -57,16 +57,16 @@
                                         <!-- RD Navbar Share-->
 
                                         <ul class="rd-navbar-nav">
-                                            <li class="rd-nav-item"><a class="rd-nav-link" href="/index">Novos Eventos
+                                            <li class="rd-nav-item"><a class="rd-nav-link" href="/">Novos Eventos
                                                 </a></li>
                                             <li class="rd-nav-item"><a class="rd-nav-link" href="/Server">Server
                                                     Status</a></li>
-                                            <li class="rd-nav-item"><a class="rd-nav-link" href="#rank">Ranks</a></li>
                                             <li class="rd-nav-item"><a class="rd-nav-link" href="#team">VTC</a></li>
-                                            <li class="rd-nav-item"><a class="rd-nav-link" href="/Events_Detail">Detalhes dos
+                                            <li class="rd-nav-item"><a class="rd-nav-link"
+                                                    href="/Events_Detail">Detalhes dos
                                                     Eventos</a></li>
-                                            <li class="rd-nav-item"><a class="rd-nav-link" href="#contacts">Empresas de
-                                                    Transporte Virtual</a></li>
+                                            <li class="rd-nav-item"><a class="rd-nav-link" href="/Rules">Truckersmp
+                                                    Regras</a></li>
                                         </ul>
                                     </div>
                                 </div>
