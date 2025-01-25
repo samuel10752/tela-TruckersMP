@@ -1,6 +1,4 @@
 <?php
-// events.php (ou index.php)
-
 // 1) Obter dados da API
 $url  = "https://api.truckersmp.com/v2/vtc";
 $json = @file_get_contents($url);
