@@ -62,8 +62,9 @@
                                             <li class="rd-nav-item"><a class="rd-nav-link" href="/Server">Server
                                                     Status</a></li>
                                             <li class="rd-nav-item"><a class="rd-nav-link" href="/VTC">VTC</a></li>
-                                            <li class="rd-nav-item"><a class="rd-nav-link" href="/Events_Detail">Detalhes dos
-                                                    Eventos</a></li>
+                                            <li class="rd-nav-item"><a class="rd-nav-link"
+                                                href="/Events_Detail">Detalhes dos
+                                                Eventos  e VTC</a></li>
                                             <li class="rd-nav-item"><a class="rd-nav-link" href="/Rules">Truckersmp Regras</a></li>
                                         </ul>
                                     </div>
