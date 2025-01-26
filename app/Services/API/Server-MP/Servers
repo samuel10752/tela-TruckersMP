@@ -1,0 +1,94 @@
+<?php
+// URLs das APIs
+$urlServers = "https://api.truckersmp.com/v2/servers";
+$urlGameTime = "https://api.truckersmp.com/v2/game_time";
+
+// Obter dados da API de servidores
+$jsonServers = file_get_contents($urlServers);
+$servers = json_decode($jsonServers, true);
+
+// Obter dados da API de game_time
+$jsonGameTime = file_get_contents($urlGameTime);
+$gameTimeData = json_decode($jsonGameTime, true);
+
+// Verificar se a API de game_time foi bem-sucedida
+if (isset($gameTimeData['game_time'])) {
+    $totalMinutes = $gameTimeData['game_time'];
+
+    // Calcular horas e minutos
+    $hours24 = floor($totalMinutes / 60) % 24; // Horas no formato 24h
+    $minutes = $totalMinutes % 60; // Minutos
+    $period = $hours24 >= 12 ? 'PM' : 'AM'; // Determinar AM ou PM
+
+    // Converter para o formato 12h
+    $hours12 = $hours24 % 12;
+    $hours12 = $hours12 === 0 ? 12 : $hours12; // Ajustar para 12h em vez de 0h
+
+    // Formatar o horário no formato hh:mm AM/PM
+    $formattedGameTime = sprintf('%02d:%02d %s', $hours12, $minutes, $period);
+} else {
+    $formattedGameTime = "Não foi possível obter o horário do jogo.";
+}
+
+// Exibir o horário do jogo
+echo "<h2 id='game-time'>Hora do jogo: " . $formattedGameTime . "</h2>";
+
+// Inicializar os totais de jogadores para ETS2 e ATS
+$totalETS2 = 0;
+$totalATS = 0;
+
+// Verificar se a requisição dos servidores foi bem-sucedida
+if (isset($servers['response']) && is_array($servers['response'])) {
+    echo "<h2 id='game-time'>Status dos Servidores</h2>";
+
+    echo "<table class='server-table'>";
+    echo "<tr>
+            <th>Nome do Servidor</th>
+            <th>Jogo</th>
+            <th>jogadores Online</th>
+            <th>Status</th>
+            <th>Colisão</th>
+            <th>Carros para Jogadores</th>
+            <th>Carros de polícia</th>
+            <th>AFK Habilitado</th>
+            <th>Eventos</th>
+            <th>Evento Especial</th>
+          </tr>";
+    foreach ($servers['response'] as $server) {
+        $collisions = $server['collisions'] ? "<i class='fas fa-exclamation-circle icon icon-enabled'></i>" : "<i class='fas fa-times-circle icon icon-disabled'></i>";
+        $carsForPlayers = $server['carsforplayers'] ? "<i class='fas fa-car icon icon-enabled'></i>" : "<i class='fas fa-car icon icon-disabled'></i>";
+        $policeCars = $server['policecarsforplayers'] ? "<i class='fas fa-taxi icon icon-enabled'></i>" : "<i class='fas fa-taxi icon icon-disabled'></i>";
+        $afkEnabled = $server['afkenabled'] ? "<i class='fas fa-clock icon icon-enabled'></i>" : "<i class='fas fa-times-circle icon icon-disabled'></i>";
+        $event = $server['event'] ? "<i class='fas fa-calendar-check icon icon-enabled'></i>" : "<i class='fas fa-calendar-check icon icon-disabled'></i>";
+        $specialEvent = $server['specialEvent'] ? "<i class='fas fa-star icon icon-enabled'></i>" : "<i class='fas fa-star icon icon-disabled'></i>";
+
+        echo "<tr>";
+        echo "<td>" . $server['name'] . "</td>";
+        echo "<td>" . $server['game'] . "</td>";
+        echo "<td>" . $server['players'] . " / " . $server['maxplayers'] . "</td>";
+        echo "<td>" . ($server['online'] ? "<i class='fas fa-check-circle icon icon-enabled'></i>" : "<i class='fas fa-times-circle icon icon-disabled'></i>") . "</td>";
+        echo "<td>" . $collisions . "</td>";
+        echo "<td>" . $carsForPlayers . "</td>";
+        echo "<td>" . $policeCars . "</td>";
+        echo "<td>" . $afkEnabled . "</td>";
+        echo "<td>" . $event . "</td>";
+        echo "<td>" . $specialEvent . "</td>";
+        echo "</tr>";
+
+        if ($server['game'] === 'ETS2') {
+            $totalETS2 += $server['players'];
+        } elseif ($server['game'] === 'ATS') {
+            $totalATS += $server['players'];
+        }
+    }
+    echo "</table>";
+
+    // Exibir os totais de jogadores
+    echo "<div class='stats'>";
+    echo "<div><strong>ETS2:</strong><br>" . $totalETS2 . " jogadores online</div>";
+    echo "<div><strong>ATS:</strong><br>" . $totalATS . " jogadores online</div>";
+    echo "<div><strong>Total:</strong><br>" . ($totalETS2 + $totalATS) . " jogadores online</div>";
+    echo "</div>";
+} else {
+    echo "<p>Could not fetch server data.</p>";
+}
