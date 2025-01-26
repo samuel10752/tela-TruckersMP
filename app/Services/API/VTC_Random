@@ -110,7 +110,7 @@ if ($data && isset($data['response']) && is_array($data['response'])) {
     $owner_username = $event["owner_username"]   ?? "Usuario Desconhecido";
     $tag = $event["tag"]   ?? "Sem tag";
     $banner    = $event["banner"] ?? "/public/images/Banner/Eventos/banner.jpg";
-    $eventUrl  = "/Events_Detail";
+    $eventUrl  = "/Events_VTC_Detail";
 
     // Coluna de evento
     echo '

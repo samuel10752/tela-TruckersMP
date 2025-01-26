@@ -63,7 +63,7 @@
                                                     Status</a></li>
                                             <li class="rd-nav-item"><a class="rd-nav-link" href="/VTC">VTC</a></li>
                                             <li class="rd-nav-item"><a class="rd-nav-link"
-                                                href="/Events_Detail">Detalhes dos
+                                                href="/Events_VTC_Detail">Detalhes dos
                                                 Eventos  e VTC</a></li>
                                             <li class="rd-nav-item"><a class="rd-nav-link" href="/Rules">Truckersmp Regras</a></li>
                                         </ul>

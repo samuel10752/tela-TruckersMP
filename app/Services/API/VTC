@@ -51,7 +51,7 @@ if ($data && isset($data['response']) && is_array($data['response'])) {
         $recruitment   = $event['recruitment']              ?? 'Sem Vagas para Recrutamento';
 
         // Construir a URL de detalhes usando o ID
-        $eventUrl    = "/Events_Detail";
+        $eventUrl    = "/Events_VTC_Detail";
 
         echo '<div class="swiper-slide" data-slide-bg="'.htmlspecialchars($banner).'">
                 <div class="swiper-slide-caption section-md">
