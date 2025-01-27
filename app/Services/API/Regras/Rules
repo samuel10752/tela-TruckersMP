@@ -1,0 +1,124 @@
+<?php
+// Inclua a biblioteca Parsedown (certifique-se de que o autoloader do Composer está configurado corretamente)
+require 'vendor/autoload.php';
+
+// Função para traduzir texto usando um dicionário local
+function translateText($text)
+{
+    // Dicionário de palavras/frases em inglês para português
+    $dictionary = [
+        "Latest Changes" => "Últimas Alterações",
+        "You can view the TruckersMP rules in other languages" => "Você pode ver as regras do TruckersMP em outros idiomas",
+        "Detailed changelogs of the official rules can be accessed here" => "Os registros detalhados das regras oficiais podem ser acessados aqui",
+        "Updated" => "Atualizado",
+        "privacy policy" => "política de privacidade",
+        "rules" => "regras",
+        "Terms of Service" => "Termos de Serviço",
+        "Account Status" => "Status da Conta",
+        "Linked games" => "Jogos Vinculados",
+        "Member since" => "Membro desde",
+        "Active bans" => "Banimentos Ativos",
+        "In-Game status" => "Status no Jogo",
+        "Offline" => "Offline",
+        "Online" => "Online",
+        "rule " => "Regras",
+        // Adicione mais palavras ou frases conforme necessário
+    ];
+
+    // Substituir as palavras/frases no texto
+    foreach ($dictionary as $english => $portuguese) {
+        $text = str_replace($english, $portuguese, $text);
+    }
+
+    return $text;
+}
+
+// 1) Obter dados da API de regras
+$url = "https://api.truckersmp.com/v2/rules";
+$json = @file_get_contents($url);
+$data = json_decode($json, true);
+
+// 2) Verificar se os dados existem e estão estruturados corretamente
+if ($data && isset($data['rules'])) {
+    $rulesContent = $data['rules']; // Conteúdo completo das regras
+    $lastUpdated = $data['last_updated'] ?? "Desconhecido"; // Última atualização, se disponível
+
+    // Traduzir o conteúdo das regras para português usando o dicionário local
+    $translatedRules = translateText($rulesContent);
+
+    // Converter o conteúdo Markdown para HTML
+    $Parsedown = new Parsedown();
+    $rulesHtml = $Parsedown->text($translatedRules);
+
+    // Início do HTML e estilo
+    echo '
+    <style>
+      h1 {
+        text-align: center;
+        color: #ffffff;
+      }
+      .rules-container {
+        padding: 20px;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        background: rgb(0, 0, 0);
+        margin: 20px auto;
+        max-width: 800px;
+        text-align: left;
+        color: #ffffff;
+      }
+      .rules-container h3 {
+        color: #576eff;
+        margin-bottom: 10px;
+      }
+      .last-updated {
+        text-align: center;
+        margin-top: 10px;
+        font-size: 0.9em;
+        color: #777;
+      }
+      .error-message {
+        padding: 20px;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        background: #fdd;
+        color: #900;
+        margin: 20px auto;
+        max-width: 800px;
+        text-align: center;
+      }
+    </style>
+    ';
+
+    echo '<h1>Regras do TruckersMP</h1>';
+    echo '<div class="rules-container">';
+    echo '<h3>Detalhes das Regras:</h3>';
+    echo '<div>' . $rulesHtml . '</div>'; // Renderiza o HTML gerado pelo Parsedown
+    echo '</div>';
+    echo '<p class="last-updated">Última atualização: ' . htmlspecialchars($lastUpdated) . '</p>';
+} else {
+    // Caso a API não tenha dados ou ocorreu um erro
+    echo '
+    <style>
+      h1 {
+        text-align: center;
+        color: #900;
+      }
+      .error-message {
+        padding: 20px;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        background: #fdd;
+        color: #900;
+        margin: 20px auto;
+        max-width: 800px;
+        text-align: center;
+      }
+    </style>
+    ';
+    echo '<h1>Erro</h1>';
+    echo '<div class="error-message">';
+    echo '<p>Não foi possível obter os dados das regras ou os dados estão indisponíveis no momento.</p>';
+    echo '</div>';
+}
+?>

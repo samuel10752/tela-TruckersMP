@@ -8,7 +8,6 @@ if (!isset($_GET['id']) || !is_numeric($_GET['id'])) {
     echo "<p>ID do evento inválido.</p>";
     exit;
 }
-
 // Capturar o ID do evento
 $eventId = intval($_GET['id']);
 $url = "https://api.truckersmp.com/v2/events/{$eventId}";

@@ -2,7 +2,7 @@
 <html class="wide wow-animation" lang="pt-BR">
 
 <head>
-    <title> Blog </title>
+    <title> Detalhe do VTC</title>
     <meta name="format-detection" content="telephone=no">
     <meta name="viewport"
         content="width=device-width, height=device-height, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
@@ -12,6 +12,8 @@
     <!-- Stylesheets-->
     <link rel="stylesheet" type="text/css"
         href="//fonts.googleapis.com/css?family=Poppins:400,500,600%7CTeko:300,400,500%7CMaven+Pro:500">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+
     <link rel="stylesheet" href="/public/css/bootstrap.css">
     <link rel="stylesheet" href="/public/css/fonts.css">
     <link rel="stylesheet" href="/public/css/style.css">
@@ -78,8 +80,10 @@
 
             <?php
 
-                include_once __DIR__ . '/../../Services/API/Blog_News/Blog';
-                ?>
+                include_once __DIR__ . '/../../Services/API/VTCS/VTC_Details';
+
+            ?>
+
 
             <!-- Page Footer-->
             <footer class="section section-fluid footer-minimal context-dark">
@@ -123,9 +127,7 @@
             <!-- Javascript-->
             <script src="/public/js/core.min.js"></script>
             <script src="/public/js/script.js"></script>
-            <script src="/storage/cache/cache.js"></script>
 
-            <!-- coded by Himic-->
 </body>
 
 </html>

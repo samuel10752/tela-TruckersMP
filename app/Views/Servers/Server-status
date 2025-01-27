@@ -2,7 +2,7 @@
 <html class="wide wow-animation" lang="pt-BR">
 
 <head>
-    <title> </title>
+    <title> Status dos Servidores TruckersMP </title>
     <meta name="format-detection" content="telephone=no">
     <meta name="viewport"
         content="width=device-width, height=device-height, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
@@ -50,7 +50,7 @@
                                     <button class="rd-navbar-toggle"
                                         data-rd-navbar-toggle=".rd-navbar-nav-wrap"><span></span></button>
                                     <!-- RD Navbar Brand-->
-                                    <div class="rd-navbar-brand"><a class="brand" href="/index"><img
+                                    <div class="rd-navbar-brand"><a class="brand" href="/"><img
                                                 src="/public/images/logo-default-223x50.png" alt="" width="223"
                                                 height="50" /></a></div>
                                 </div>
@@ -63,12 +63,11 @@
                                                 </a></li>
                                             <li class="rd-nav-item"><a class="rd-nav-link" href="/Server">Server
                                                     Status</a></li>
-                                            <li class="rd-nav-item"><a class="rd-nav-link" href="#rank">Ranks</a></li>
-                                            <li class="rd-nav-item"><a class="rd-nav-link" href="#team">VTC</a></li>
-                                            <li class="rd-nav-item"><a class="rd-nav-link" href="/Events_Detail">Detalhes dos
-                                                    Eventos</a></li>
-                                            <li class="rd-nav-item"><a class="rd-nav-link" href="#contacts">Empresas de
-                                                    Transporte Virtual</a></li>
+                                            <li class="rd-nav-item"><a class="rd-nav-link" href="/VTC">VTC</a></li>
+                                            <li class="rd-nav-item"><a class="rd-nav-link" href="/Events_VTC_Detail">Detalhes dos
+                                                Eventos  e VTC</a></li>
+                                            <li class="rd-nav-item"><a class="rd-nav-link" href="/Rules">Truckersmp
+                                                    Regras</a></li>
                                         </ul>
                                     </div>
                                 </div>
@@ -81,7 +80,7 @@
 
             <?php
 
-                include_once __DIR__ . '/../../Services/API/Servers';
+                include_once __DIR__ . '/../../Services/API/Server-MP/Servers';
 
             ?>
 
