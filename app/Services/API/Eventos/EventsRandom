@@ -111,7 +111,7 @@ if ($data && isset($data['response']) && is_array($data['response'])) {
         $eventName = $event["name"]   ?? "Sem nome";
         $banner    = $event["banner"] ?? "/public/images/Banner/Eventos/ets-ats.jpg";
         $eventId   = $event["id"]     ?? 0; // Certificar-se de capturar o ID correto
-        $eventUrl  = "/Events_Detail";
+        $eventUrl  = "/Events_VTC_Detail";
     
         // Coluna de evento
         echo '
