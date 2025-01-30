@@ -93,7 +93,7 @@
                         <div class="footer-minimal-inset oh">
                             <ul class="footer-list-category-2">
                                 <li><a href="/About">Sobre</a></li>
-                                <!-- <li><a href="#">Downloads</a></li> -->
+                                <li><a href="/Version_Game">Versão do Game</a></li>
                                 <li><a href="/Blog">Blog</a></li>
                                 <li><a href="/Server">Status dos Servidores</a></li>
                                 <!-- <li><a href="#">Suporte</a></li> -->
