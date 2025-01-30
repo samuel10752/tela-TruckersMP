@@ -1,0 +1,56 @@
+<?php
+// URLs das APIs
+$urlVersion = "https://api.truckersmp.com/v2/version";
+
+// Obter dados da API de servidores
+$jsonVersion = file_get_contents($urlVersion);
+
+if ($jsonVersion === FALSE) {
+    echo "<p>Erro ao acessar a API.</p>";
+    exit;
+}
+
+$version = json_decode($jsonVersion, true);
+
+if (json_last_error() !== JSON_ERROR_NONE) {
+    echo "<p>Erro ao decodificar o JSON.</p>";
+    exit;
+}
+
+// Verificar se a requisição foi bem-sucedida e se a estrutura do JSON é a esperada
+if (isset($version['name'], $version['stage'], $version['numeric'], $version['ets2mp_checksum'], $version['atsmp_checksum'], $version['supported_game_version'], $version['supported_ats_game_version'], $version['time'])) {
+    echo "<h2 id='game-time'>Versão do client e Games</h2>";
+
+    echo "<table class='server-table'>";
+    echo "<tr>
+            <th>Versão do Client</th>
+            <th>Estágio do Client</th>
+            <th>Numérico do Client</th>
+            <th>Verificação do ETS2 (DLL)</th>
+            <th>Verificação do ETS2  (ADB)</th>
+            <th>Verificação do ATS (DLL)</th>
+            <th>Verificação do ATS  (ADB)</th>
+          </tr>";
+
+        echo "<tr>";
+        echo "<td>" . $version['name'] . "</td>";
+        echo "<td>" . $version['stage'] . "</td>";
+        echo "<td>" . $version['numeric'] . "</td>";
+        echo "<td>" . $version['ets2mp_checksum']['dll'] . "</td>";  // Exibe o valor da DLL
+        echo "<td>" . $version['ets2mp_checksum']['adb'] . "</td>";  // Exibe o valor da ADB
+        echo "<td>" . $version['atsmp_checksum']['dll'] . "</td>";  // Exibe o valor da DLL
+        echo "<td>" . $version['atsmp_checksum']['adb'] . "</td>";  // Exibe o valor da ADB
+        echo "</tr>";
+
+    echo "</table>";
+
+    // Exibir os totais de jogadores
+    echo "<div class='stats'>";
+    echo "<div><strong>ETS2:</strong><br> " . $version['supported_game_version'] . " Versão</div>";
+    echo "<div><strong>ATS:</strong><br> " . $version['supported_ats_game_version'] . " Versão</div>";
+    echo "<div><strong>Ultima Alteração:</strong><br> " . $version['time'] . "</div>";
+    echo "</div>";
+} else {
+    echo "<p>Não foi possível obter os dados da API ou a estrutura do JSON não é a esperada.</p>";
+}
+?>
