@@ -1,0 +1,125 @@
+<?php
+// Incluir o Parsedown (certifique-se de que ele esteja instalado via Composer)
+require 'vendor/autoload.php';
+$parsedown = new Parsedown();
+
+// Verificar se o ID foi passado na URL
+if (!isset($_GET['id']) || !is_numeric($_GET['id'])) {
+    echo "<p>ID do VTC inválido.</p>";
+    exit;
+}
+
+// Capturar o ID do VTC
+$vtcId = intval($_GET['id']);
+$vtcmembersUrl = "https://api.truckersmp.com/v2/vtc/{$vtcId}/members";
+
+// Configurar timeout para a requisição
+$options = [
+    "http" => [
+        "timeout" => 30, // Timeout de 30 segundos
+    ],
+];
+$context = stream_context_create($options);
+
+// Obter dados das notícias do VTC
+$jsonmembers = @file_get_contents($vtcmembersUrl, false, $context);
+if (!$jsonmembers) {
+    echo "<p>Erro ao obter os dados da API das notícias do VTC. A API pode estar indisponível. Tente novamente mais tarde.</p>";
+    exit;
+}
+$dataMembers = json_decode($jsonmembers, true);
+
+// Verificar se os dados das notícias foram retornados
+if ($dataMembers && isset($dataMembers['response']['members'])) {
+    $allMembers = $dataMembers['response']['members'];
+
+    // Verificar se há notícias para exibir
+    if (empty($allMembers)) {
+        echo "<p>Não há notícias disponíveis para este VTC no momento.</p>";
+        exit;
+    }
+} else {
+    echo "<p>Detalhes das notícias do VTC não encontrados. Verifique se o ID do VTC é válido.</p>";
+    exit;
+}
+
+// Exibição dos detalhes das notícias do VTC
+echo '
+
+    <style>
+
+        .container {
+            max-width: 1200px;
+            margin: 40px auto;
+            padding: 20px;
+            background: #1e1e1e;
+            border-radius: 8px;
+        }
+        .content {
+            text-align: center;
+        }
+        h1, h2 {
+            margin-bottom: 20px;
+        }
+        .news-item {
+            margin-bottom: 30px;
+            padding: 20px;
+            background: #2a2a2a;
+            border-radius: 8px;
+        }
+        .news-item h2 {
+            color: #576eff;
+        }
+        .button-ujarak {
+            display: inline-block;
+            padding: 10px 20px;
+            background: #576eff;
+            color: #fff;
+            text-decoration: none;
+            border-radius: 4px;
+            text-align: center;
+            transition: background 0.3s;
+        }
+        .button-ujarak:hover {
+            background: #4655cc;
+        }
+    </style>
+
+    <div class="container">
+        <div class="content">
+            <h1>Membros do VTC</h1>';
+
+// Loop sobre todas as notícias
+foreach ($allMembers as $members) {
+    // CAMPOS PRINCIPAIS DAS NOTÍCIAS
+    $membersid = htmlspecialchars($members['id'] ?? 'Sem id');
+    $membersTitle = htmlspecialchars($members['username'] ?? 'Sem Usuario');
+    $membersrole = htmlspecialchars($members['role'] ?? 'Sem role');
+    $membersuser_id = htmlspecialchars($members['user_id'] ?? 'ID Desconhecido');
+    $memberssteam_id = htmlspecialchars($members['steam_id'] ?? 'Steam Id desconhecida');
+    $updatedAt = htmlspecialchars($members['joinDate'] ?? 'Data de atualização desconhecida');
+
+    // Gerar link para detalhes da notícia
+    $MembersDetailsUrl = "VTC_Members_Details?id={$vtcId}&members_id={$membersid}";
+
+    // Exibir cada notícia
+    echo '
+    <div class="news-item">
+        <h2>' . $membersTitle . '</h2>
+        <p><strong>Regra:</strong> ' . $membersrole . '</p>
+        <p><strong>TruckersMP ID:</strong> ' . $membersuser_id . '</p>
+        <p><strong>Steam ID:</strong> ' . $memberssteam_id . '</p>
+        <p><strong>Data de entrada:</strong></p>
+        <div>' . $updatedAt . '</div>
+        <div class="box-icon-modern-decor" style="margin: 10px auto;"></div>
+        <a class="button-ujarak" href="' . $MembersDetailsUrl . '">Ver Detalhes</a>
+    </div>';
+}
+
+echo '
+        </div>
+    </div>
+</body>
+</html>
+';
+?>
