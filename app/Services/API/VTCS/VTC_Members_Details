@@ -1,0 +1,101 @@
+<?php
+// Incluir o Parsedown (certifique-se de que ele esteja instalado via Composer)
+require 'vendor/autoload.php';
+$parsedown = new Parsedown();
+
+// Verificar se o ID do VTC e o ID da notícia foram passados na URL
+if (!isset($_GET['id']) || !is_numeric($_GET['id']) || !isset($_GET['members_id']) || !is_numeric($_GET['members_id'])) {
+    echo "<p>ID do VTC ou ID da notícia inválido.</p>";
+    exit;
+}
+
+// Capturar o ID do VTC e o ID da notícia
+$vtcId = intval($_GET['id']);
+$membersid = intval($_GET['members_id']);
+$vtcMembersUrl = "https://api.truckersmp.com/v2/vtc/{$vtcId}/member/{$membersid}";
+
+// Configurar timeout para a requisição
+$options = [
+    "http" => [
+        "timeout" => 30, // Timeout de 30 segundos
+    ],
+];
+$context = stream_context_create($options);
+
+// Obter dados da notícia específica do VTC
+$jsonMembers = @file_get_contents($vtcMembersUrl, false, $context);
+if (!$jsonMembers) {
+    echo "<p>Erro ao obter os dados da API da notícia do VTC. A API pode estar indisponível. Tente novamente mais tarde.</p>";
+    exit;
+}
+$dataMembers = json_decode($jsonMembers, true);
+
+// Verificar se os dados da notícia foram retornados
+if ($dataMembers && isset($dataMembers['response'])) {
+    $members = $dataMembers['response'];
+
+    // CAMPOS PRINCIPAIS DA NOTÍCIA
+    $username = htmlspecialchars($members['username'] ?? 'Sem Usuario');
+    $membersrole = htmlspecialchars($members['role'] ?? 'Data de publicação desconhecida');
+    $membersuser_id = $parsedown->text($members['user_id'] ?? 'ID Desconhecido');
+    $memberssteam_id = $parsedown->text($members['steam_id'] ?? 'Steam Id Desconhecido');
+    $updatedAt = htmlspecialchars($members['joinDate'] ?? 'Data de atualização desconhecida');
+
+} else {
+    echo "<p>Detalhes da notícia do VTC não encontrados. Verifique se o ID do VTC e o ID da notícia são válidos.</p>";
+    exit;
+}
+
+// Exibição dos detalhes da notícia do VTC
+echo '
+    <style>
+
+        .container {
+            max-width: 1200px;
+            margin: 40px auto;
+            padding: 20px;
+            background: #1e1e1e;
+            border-radius: 8px;
+        }
+        .content {
+            text-align: center;
+        }
+        h1, h2 {
+            margin-bottom: 20px;
+        }
+        .news-banner {
+            width: 100%;
+            height: 300px;
+            background-size: cover;
+            background-position: center;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+        .social-links a {
+            display: inline-block;
+            margin: 0 10px;
+            color: #576eff;
+            text-decoration: none;
+        }
+        .social-links a:hover {
+            text-decoration: underline;
+        }
+    </style>
+
+    <div class="container">
+        <div class="content">';
+
+echo '
+            <p><strong>Usuario:</strong> ' . $username . '</p>
+            <p><strong>Regra:</strong> ' . $membersrole . '</p>
+            <p><strong>TruckersMP ID:</strong> ' . $membersuser_id . '</p>
+            <p><strong>Steam ID:</strong> ' . $memberssteam_id . '</p>
+            <p><strong>Data de entrada:</strong></p><div>' . $updatedAt . '</div>';
+
+echo '
+        </div>
+    </div>
+</body>
+</html>
+';
+?>
