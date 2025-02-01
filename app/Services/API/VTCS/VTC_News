@@ -1,0 +1,131 @@
+<?php
+// Incluir o Parsedown (certifique-se de que ele esteja instalado via Composer)
+require 'vendor/autoload.php';
+$parsedown = new Parsedown();
+
+// Verificar se o ID foi passado na URL
+if (!isset($_GET['id']) || !is_numeric($_GET['id'])) {
+    echo "<p>ID do VTC inválido.</p>";
+    exit;
+}
+
+// Capturar o ID do VTC
+$vtcId = intval($_GET['id']);
+$vtcNewsUrl = "https://api.truckersmp.com/v2/vtc/{$vtcId}/news";
+
+// Configurar timeout para a requisição
+$options = [
+    "http" => [
+        "timeout" => 30, // Timeout de 30 segundos
+    ],
+];
+$context = stream_context_create($options);
+
+// Obter dados das notícias do VTC
+$jsonNews = @file_get_contents($vtcNewsUrl, false, $context);
+if (!$jsonNews) {
+    echo "<p>Erro ao obter os dados da API das notícias do VTC. A API pode estar indisponível. Tente novamente mais tarde.</p>";
+    exit;
+}
+$dataNews = json_decode($jsonNews, true);
+
+// Verificar se os dados das notícias foram retornados
+if ($dataNews && isset($dataNews['response']['news'])) {
+    $allNews = $dataNews['response']['news'];
+
+    // Verificar se há notícias para exibir
+    if (empty($allNews)) {
+        echo "<p>Não há notícias disponíveis para este VTC no momento.</p>";
+        exit;
+    }
+} else {
+    echo "<p>Detalhes das notícias do VTC não encontrados. Verifique se o ID do VTC é válido.</p>";
+    exit;
+}
+
+// Exibição dos detalhes das notícias do VTC
+echo '
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Notícias do VTC</title>
+    <style>
+
+        .container {
+            max-width: 1200px;
+            margin: 40px auto;
+            padding: 20px;
+            background: #1e1e1e;
+            border-radius: 8px;
+        }
+        .content {
+            text-align: center;
+        }
+        h1, h2 {
+            margin-bottom: 20px;
+        }
+        .news-item {
+            margin-bottom: 30px;
+            padding: 20px;
+            background: #2a2a2a;
+            border-radius: 8px;
+        }
+        .news-item h2 {
+            color: #576eff;
+        }
+        .button-ujarak {
+            display: inline-block;
+            padding: 10px 20px;
+            background: #576eff;
+            color: #fff;
+            text-decoration: none;
+            border-radius: 4px;
+            text-align: center;
+            transition: background 0.3s;
+        }
+        .button-ujarak:hover {
+            background: #4655cc;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="content">
+            <h1>Notícias do VTC</h1>';
+
+// Loop sobre todas as notícias
+foreach ($allNews as $news) {
+    // CAMPOS PRINCIPAIS DAS NOTÍCIAS
+    $newsid = htmlspecialchars($news['id'] ?? 'Sem id');
+    $newsTitle = htmlspecialchars($news['title'] ?? 'Sem título');
+    $contentSummary = $parsedown->text($news['content_summary'] ?? 'Sem resumo.');
+    $author = htmlspecialchars($news['author'] ?? 'Autor Desconhecido');
+    $publishedAt = htmlspecialchars($news['published_at'] ?? 'Data de publicação desconhecida');
+    $updatedAt = htmlspecialchars($news['updated_at'] ?? 'Data de atualização desconhecida');
+
+    // Gerar link para detalhes da notícia
+    $newsDetailsUrl = "VTC_News_Details?id={$vtcId}&news_id={$newsid}";
+
+    // Exibir cada notícia
+    echo '
+    <div class="news-item">
+        <h2>' . $newsTitle . '</h2>
+        <p><strong>Autor:</strong> ' . $author . '</p>
+        <p><strong>Publicado em:</strong> ' . $publishedAt . '</p>
+        <p><strong>Atualizado em:</strong> ' . $updatedAt . '</p>
+        <p><strong>Resumo:</strong></p>
+        <div>' . $contentSummary . '</div>
+        <div class="box-icon-modern-decor" style="margin: 10px auto;"></div>
+        <a class="button-ujarak" href="' . $newsDetailsUrl . '">Ver Detalhes</a>
+    </div>';
+}
+
+echo '
+        </div>
+    </div>
+</body>
+</html>
+';
+?>
