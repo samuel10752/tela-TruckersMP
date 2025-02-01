@@ -47,6 +47,12 @@ if ($dataVTC && isset($dataVTC['response'])) {
     $website = htmlspecialchars($vtc['website'] ?? 'Sem site');
     $language = htmlspecialchars($vtc['language'] ?? 'Idioma não especificado');
     $created = htmlspecialchars($vtc['created'] ?? 'Data de criação desconhecida');
+    $banner    = $vtc["banner"] ?? "/public/images/Banner/Eventos/banner.jpg";
+    // Verifique se a chave 'type' existe no array $vtc
+    $vtcType = $vtc['type'] ?? 'default'; // Use 'default' como valor padrão se 'type' não existir
+
+    // Gerar o link com base no tipo ou usar um valor padrão
+    $vtcnewsId = ($vtcType === 'event') ? "VTC_Events?id={$vtcId}" : "VTC_News?id={$vtcId}";
     $games = $vtc['games'] ?? [];
 
     // Rede sociais
@@ -123,6 +129,77 @@ echo '
         .games-list a:hover {
             text-decoration: underline;
         }
+
+      /* Container de 5 colunas */
+      .five-columns-container {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 20px;
+        justify-content: center;
+        margin: 40px auto;
+        max-width: 1400px;
+      }
+    
+      /* Estilo de cada item (coluna) */
+      .five-columns-item {
+        flex: 0 0 calc(20% - 20px);
+        box-sizing: border-box;
+        position: relative;
+        min-height: 300px;
+        color: #fff;
+        border-radius: 6px;
+        overflow: hidden;
+      }
+    
+      /* Conteúdo sobreposto */
+      .five-columns-item > div {
+        background: rgba(0, 0, 0, 0.5);
+        padding: 20px;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-end;
+      }
+    
+      /* Botão de detalhes */
+      .button-ujarak {
+        display: inline-block;
+        padding: 10px 20px;
+        background: #576eff;
+        color: #fff;
+        text-decoration: none;
+        border-radius: 4px;
+        text-align: center;
+        transition: background 0.3s;
+      }
+      .button-ujarak:hover {
+        background: #4655cc;
+      }
+    
+      /* Responsividade */
+      @media (max-width: 1200px) {
+        .five-columns-item {
+          flex: 0 0 calc(25% - 20px);
+        }
+      }
+    
+      @media (max-width: 992px) {
+        .five-columns-item {
+          flex: 0 0 calc(33.33% - 20px);
+        }
+      }
+    
+      @media (max-width: 768px) {
+        .five-columns-item {
+          flex: 0 0 calc(50% - 20px);
+        }
+      }
+    
+      @media (max-width: 576px) {
+        .five-columns-item {
+          flex: 0 0 calc(100% - 20px);
+        }
+      }
     </style>
 </head>
 <body>
@@ -163,6 +240,31 @@ echo '
             <div>' . $rules . '</div>
         </div>
 
+
+<section class="section section-sm section-first bg-default text-center">
+            <h3>Todos os VTCS</h3>
+            <div class="five-columns-container">
+                <div class="five-columns-item"
+                     style="background-image: url(\'' . htmlspecialchars($banner) . '\');
+                            background-size: cover;
+                            background-position: center;
+                            background-repeat: no-repeat;">
+                    <div>
+                        <h3 class="box-icon-modern-big-title" style="margin: 0;">
+                            Novidades
+                        </h3>
+                        <br><br><br>
+                        <div class="box-icon-modern-decor" style="margin: 10px auto;"></div>
+                        <a class="button-ujarak" 
+                           href="' . htmlspecialchars($vtcnewsId) . '">
+                            Ver Detalhes
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+
         <!-- Redes sociais -->
         <div class="content">
             <h2>Redes Sociais</h2>
@@ -174,6 +276,7 @@ foreach ($socials as $platform => $link) {
 }
 echo '
             </div>
+        
         </div>
         
     </div>
