@@ -4,15 +4,15 @@ require 'vendor/autoload.php';
 $parsedown = new Parsedown();
 
 // Verificar se o ID do VTC e o ID da notícia foram passados na URL
-if (!isset($_GET['id']) || !is_numeric($_GET['id']) || !isset($_GET['news_id']) || !is_numeric($_GET['news_id'])) {
-    echo "<p>ID do VTC ou ID da notícia inválido.</p>";
+if (!isset($_GET['id']) || !is_numeric($_GET['id']) || !isset($_GET['roles_id']) || !is_numeric($_GET['roles_id'])) {
+    echo "<p>ID do VTC ou ID da Regras inválido.</p>";
     exit;
 }
 
 // Capturar o ID do VTC e o ID da notícia
 $vtcId = intval($_GET['id']);
-$newsId = intval($_GET['news_id']);
-$vtcNewsUrl = "https://api.truckersmp.com/v2/vtc/{$vtcId}/news/{$newsId}";
+$rolesid = intval($_GET['roles_id']);
+$vtcRolesUrl = "https://api.truckersmp.com/v2/vtc/{$vtcId}/role/{$rolesid}";
 
 // Configurar timeout para a requisição
 $options = [
@@ -23,28 +23,25 @@ $options = [
 $context = stream_context_create($options);
 
 // Obter dados da notícia específica do VTC
-$jsonNews = @file_get_contents($vtcNewsUrl, false, $context);
-if (!$jsonNews) {
-    echo "<p>Erro ao obter os dados da API da notícia do VTC. A API pode estar indisponível. Tente novamente mais tarde.</p>";
+$jsonRoles = @file_get_contents($vtcRolesUrl, false, $context);
+if (!$jsonRoles) {
+    echo "<p>Erro ao obter os dados da API da Regras do VTC. A API pode estar indisponível. Tente novamente mais tarde.</p>";
     exit;
 }
-$dataNews = json_decode($jsonNews, true);
+$dataroles = json_decode($jsonRoles, true);
 
 // Verificar se os dados da notícia foram retornados
-if ($dataNews && isset($dataNews['response'])) {
-    $news = $dataNews['response'];
+if ($dataroles && isset($dataroles['response'])) {
+    $roles_news = $dataroles['response'];
 
     // CAMPOS PRINCIPAIS DA NOTÍCIA
-    $newsTitle = htmlspecialchars($news['title'] ?? 'Sem título');
-    $contentSummary = $parsedown->text($news['content_summary'] ?? 'Sem resumo.');
-    $author = htmlspecialchars($news['author'] ?? 'Autor Desconhecido');
-    $publishedAt = htmlspecialchars($news['published_at'] ?? 'Data de publicação desconhecida');
-    $newsContent = $parsedown->text($news['content'] ?? 'Sem conteúdo');
-    $updatedAt = htmlspecialchars($news['updated_at'] ?? 'Data de atualização desconhecida');
-    $banner = htmlspecialchars($news['banner'] ?? ''); // URL da imagem de banner
-    $socials = $news['socials'] ?? []; // Redes sociais
+    $rolesTitle = htmlspecialchars($roles_news['name'] ?? 'Sem Nome');
+    $order = htmlspecialchars($roles_news['order'] ?? 'Ordem Desconhecido');
+    $publishedAt = htmlspecialchars($roles_news['created_at'] ?? 'Criado desconhecida');
+    $newsContent = $parsedown->text($roles_news['content'] ?? 'Sem conteúdo');
+    $updatedAt = htmlspecialchars($roles_news['updated_at'] ?? 'Atualizado desconhecida');
 } else {
-    echo "<p>Detalhes da notícia do VTC não encontrados. Verifique se o ID do VTC e o ID da notícia são válidos.</p>";
+    echo "<p>Detalhes da regras do VTC não encontrados. Verifique se o ID do VTC e o ID da regras são válidos.</p>";
     exit;
 }
 
@@ -55,7 +52,7 @@ echo '
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Detalhes da Notícia - ' . $newsTitle . '</title>
+    <title>Detalhes da Notícia - ' . $rolesTitle . '</title>
     <style>
 
         .container {
@@ -93,7 +90,7 @@ echo '
 <body>
     <div class="container">
         <div class="content">
-            <h1>' . $newsTitle . '</h1>';
+            <h1>' . $rolesTitle . '</h1>';
 
 // Exibir o banner da notícia, se disponível
 if (!empty($banner)) {
@@ -102,13 +99,9 @@ if (!empty($banner)) {
 }
 
 echo '
-            <p><strong>Autor:</strong> ' . $author . '</p>
+            <p><strong>Ordem:</strong> ' . $order . '</p>
             <p><strong>Criado em:</strong> ' . $publishedAt . '</p>
-            <p><strong>Atualizado em:</strong> ' . $updatedAt . '</p>
-            <p><strong>Resumo:</strong></p>
-            <div>' . $contentSummary . '</div>
-            <p><strong>Conteúdo:</strong></p>
-            <div>' . $newsContent . '</div>';
+            <p><strong>Atualizado em:</strong> ' . $updatedAt . '</p>';
 
 // Exibir redes sociais, se disponíveis
 if (!empty($socials)) {

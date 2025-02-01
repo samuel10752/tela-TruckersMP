@@ -52,7 +52,8 @@ if ($dataVTC && isset($dataVTC['response'])) {
     $vtcType = $vtc['type'] ?? 'default'; // Use 'default' como valor padrão se 'type' não existir
 
     // Gerar o link com base no tipo ou usar um valor padrão
-    $vtcnewsId = ($vtcType === 'event') ? "VTC_Events?id={$vtcId}" : "VTC_News?id={$vtcId}";
+    $vtcnewsId = ($vtcType === 'event') ? "VTC_Roles?id={$vtcrolesId}" : "VTC_News?id={$vtcId}";
+    $vtcrolesId = ($vtcType === 'event') ? "VTC_Roles?id={$vtcrolesId}" : "VTC_Roles?id={$vtcId}";
     $games = $vtc['games'] ?? [];
 
     // Rede sociais
@@ -242,7 +243,7 @@ echo '
 
 
 <section class="section section-sm section-first bg-default text-center">
-            <h3>Todos os VTCS</h3>
+            <h3>Detalhe do VTC</h3>
             <div class="five-columns-container">
                 <div class="five-columns-item"
                      style="background-image: url(\'' . htmlspecialchars($banner) . '\');
@@ -261,7 +262,25 @@ echo '
                         </a>
                     </div>
                 </div>
+                <div class="five-columns-item"
+                     style="background-image: url(\'' . htmlspecialchars($banner) . '\');
+                            background-size: cover;
+                            background-position: center;
+                            background-repeat: no-repeat;">
+                    <div>
+                        <h3 class="box-icon-modern-big-title" style="margin: 0;">
+                            Regras
+                        </h3>
+                        <br><br><br>
+                        <div class="box-icon-modern-decor" style="margin: 10px auto;"></div>
+                        <a class="button-ujarak" 
+                           href="' . htmlspecialchars($vtcrolesId) . '">
+                            Ver Detalhes
+                        </a>
+                    </div>
+                </div>
             </div>
+            
         </section>
 
 
