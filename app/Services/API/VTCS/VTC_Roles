@@ -1,0 +1,129 @@
+<?php
+// Incluir o Parsedown (certifique-se de que ele esteja instalado via Composer)
+require 'vendor/autoload.php';
+$parsedown = new Parsedown();
+
+// Verificar se o ID foi passado na URL
+if (!isset($_GET['id']) || !is_numeric($_GET['id'])) {
+    echo "<p>ID do VTC da regras inválido.</p>";
+    exit;
+}
+
+// Capturar o ID do VTC
+$vtcId = intval($_GET['id']);
+$vtcrolesUrl = "https://api.truckersmp.com/v2/vtc/{$vtcId}/roles";
+
+// Configurar timeout para a requisição
+$options = [
+    "http" => [
+        "timeout" => 30, // Timeout de 30 segundos
+    ],
+];
+$context = stream_context_create($options);
+
+// Obter dados das Regras do VTC
+$jsonRoles = @file_get_contents($vtcrolesUrl, false, $context);
+if (!$jsonRoles) {
+    echo "<p>Erro ao obter os dados da API das Regras do VTC. A API pode estar indisponível. Tente novamente mais tarde.</p>";
+    exit;
+}
+$dataRoles = json_decode($jsonRoles, true);
+
+// Verificar se os dados das Regras foram retornados
+if ($dataRoles && isset($dataRoles['response']['roles'])) {
+    $allRoles = $dataRoles['response']['roles'];
+
+    // Verificar se há Regras para exibir
+    if (empty($allRoles)) {
+        echo "<p>Não há Regras disponíveis para este VTC no momento.</p>";
+        exit;
+    }
+} else {
+    echo "<p>Detalhes das Regras do VTC não encontrados. Verifique se o ID do VTC é válido.</p>";
+    exit;
+}
+
+// Exibição dos detalhes das Regras do VTC
+echo '
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Regras do VTC</title>
+    <style>
+
+        .container {
+            max-width: 1200px;
+            margin: 40px auto;
+            padding: 20px;
+            background: #1e1e1e;
+            border-radius: 8px;
+        }
+        .content {
+            text-align: center;
+        }
+        h1, h2 {
+            margin-bottom: 20px;
+        }
+        .news-item {
+            margin-bottom: 30px;
+            padding: 20px;
+            background: #2a2a2a;
+            border-radius: 8px;
+        }
+        .news-item h2 {
+            color: #576eff;
+        }
+        .button-ujarak {
+            display: inline-block;
+            padding: 10px 20px;
+            background: #576eff;
+            color: #fff;
+            text-decoration: none;
+            border-radius: 4px;
+            text-align: center;
+            transition: background 0.3s;
+        }
+        .button-ujarak:hover {
+            background: #4655cc;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="content">
+            <h1>Regras do VTC</h1>';
+
+// Loop sobre todas as notícias
+foreach ($allRoles as $roles) {
+    // CAMPOS PRINCIPAIS DAS NOTÍCIAS
+    $rolesid = htmlspecialchars($roles['id'] ?? 'Sem id');
+    $rolesTitle = htmlspecialchars($roles['name'] ?? 'Sem Nome');
+    $order = $parsedown->text($roles['order'] ?? 'Autor Desconhecido');
+    $publishedAt = htmlspecialchars($roles['created_at'] ?? 'Data de Criado desconhecida');
+    $updatedAt = htmlspecialchars($roles['updated_at'] ?? 'Data de atualização desconhecida');
+
+    // Gerar link para detalhes da notícia
+    $newsDetailsUrl = "VTC_Roles_Details?id={$vtcId}&roles_id={$rolesid}";
+
+    // Exibir cada notícia
+    echo '
+    <div class="news-item">
+        <h2>' . $rolesTitle . '</h2>
+        <p><strong>Criado em:</strong> ' . $publishedAt . '</p>
+        <p><strong>Atualizado em:</strong> ' . $updatedAt . '</p>
+        <p><strong>Ordem:</strong></p>
+        <div>' . $order . '</div>
+        <div class="box-icon-modern-decor" style="margin: 10px auto;"></div>
+        <a class="button-ujarak" href="' . $newsDetailsUrl . '">Ver Detalhes</a>
+    </div>';
+}
+
+echo '
+        </div>
+    </div>
+</body>
+</html>
+';
+?>
