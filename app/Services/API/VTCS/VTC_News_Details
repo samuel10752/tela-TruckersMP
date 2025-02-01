@@ -1,0 +1,132 @@
+<?php
+// Incluir o Parsedown (certifique-se de que ele esteja instalado via Composer)
+require 'vendor/autoload.php';
+$parsedown = new Parsedown();
+
+// Verificar se o ID do VTC e o ID da notícia foram passados na URL
+if (!isset($_GET['id']) || !is_numeric($_GET['id']) || !isset($_GET['news_id']) || !is_numeric($_GET['news_id'])) {
+    echo "<p>ID do VTC ou ID da notícia inválido.</p>";
+    exit;
+}
+
+// Capturar o ID do VTC e o ID da notícia
+$vtcId = intval($_GET['id']);
+$newsId = intval($_GET['news_id']);
+$vtcNewsUrl = "https://api.truckersmp.com/v2/vtc/{$vtcId}/news/{$newsId}";
+
+// Configurar timeout para a requisição
+$options = [
+    "http" => [
+        "timeout" => 30, // Timeout de 30 segundos
+    ],
+];
+$context = stream_context_create($options);
+
+// Obter dados da notícia específica do VTC
+$jsonNews = @file_get_contents($vtcNewsUrl, false, $context);
+if (!$jsonNews) {
+    echo "<p>Erro ao obter os dados da API da notícia do VTC. A API pode estar indisponível. Tente novamente mais tarde.</p>";
+    exit;
+}
+$dataNews = json_decode($jsonNews, true);
+
+// Verificar se os dados da notícia foram retornados
+if ($dataNews && isset($dataNews['response'])) {
+    $news = $dataNews['response'];
+
+    // CAMPOS PRINCIPAIS DA NOTÍCIA
+    $newsTitle = htmlspecialchars($news['title'] ?? 'Sem título');
+    $contentSummary = $parsedown->text($news['content_summary'] ?? 'Sem resumo.');
+    $author = htmlspecialchars($news['author'] ?? 'Autor Desconhecido');
+    $publishedAt = htmlspecialchars($news['published_at'] ?? 'Data de publicação desconhecida');
+    $newsContent = $parsedown->text($news['content'] ?? 'Sem conteúdo');
+    $updatedAt = htmlspecialchars($news['updated_at'] ?? 'Data de atualização desconhecida');
+    $banner = htmlspecialchars($news['banner'] ?? ''); // URL da imagem de banner
+    $socials = $news['socials'] ?? []; // Redes sociais
+} else {
+    echo "<p>Detalhes da notícia do VTC não encontrados. Verifique se o ID do VTC e o ID da notícia são válidos.</p>";
+    exit;
+}
+
+// Exibição dos detalhes da notícia do VTC
+echo '
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Detalhes da Notícia - ' . $newsTitle . '</title>
+    <style>
+
+        .container {
+            max-width: 1200px;
+            margin: 40px auto;
+            padding: 20px;
+            background: #1e1e1e;
+            border-radius: 8px;
+        }
+        .content {
+            text-align: center;
+        }
+        h1, h2 {
+            margin-bottom: 20px;
+        }
+        .news-banner {
+            width: 100%;
+            height: 300px;
+            background-size: cover;
+            background-position: center;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+        .social-links a {
+            display: inline-block;
+            margin: 0 10px;
+            color: #576eff;
+            text-decoration: none;
+        }
+        .social-links a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="content">
+            <h1>' . $newsTitle . '</h1>';
+
+// Exibir o banner da notícia, se disponível
+if (!empty($banner)) {
+    echo '
+    <div class="news-banner" style="background-image: url(\'' . $banner . '\');"></div>';
+}
+
+echo '
+            <p><strong>Autor:</strong> ' . $author . '</p>
+            <p><strong>Publicado em:</strong> ' . $publishedAt . '</p>
+            <p><strong>Atualizado em:</strong> ' . $updatedAt . '</p>
+            <p><strong>Resumo:</strong></p>
+            <div>' . $contentSummary . '</div>
+            <p><strong>Conteúdo:</strong></p>
+            <div>' . $newsContent . '</div>';
+
+// Exibir redes sociais, se disponíveis
+if (!empty($socials)) {
+    echo '
+            <h2>Redes Sociais</h2>
+            <div class="social-links">';
+    foreach ($socials as $platform => $link) {
+        $safeLink = htmlspecialchars($link ?? '', ENT_QUOTES, 'UTF-8');
+        echo '<a href="' . $safeLink . '" target="_blank">' . ucfirst($platform) . '</a>';
+    }
+    echo '
+            </div>';
+}
+
+echo '
+        </div>
+    </div>
+</body>
+</html>
+';
+?>
