@@ -102,7 +102,7 @@ foreach ($allNews as $news) {
     $newsTitle = htmlspecialchars($news['title'] ?? 'Sem título');
     $contentSummary = $parsedown->text($news['content_summary'] ?? 'Sem resumo.');
     $author = htmlspecialchars($news['author'] ?? 'Autor Desconhecido');
-    $publishedAt = htmlspecialchars($news['published_at'] ?? 'Data de publicação desconhecida');
+    $publishedAt = htmlspecialchars($news['published_at'] ?? 'Data de Criado desconhecida');
     $updatedAt = htmlspecialchars($news['updated_at'] ?? 'Data de atualização desconhecida');
 
     // Gerar link para detalhes da notícia
@@ -113,7 +113,7 @@ foreach ($allNews as $news) {
     <div class="news-item">
         <h2>' . $newsTitle . '</h2>
         <p><strong>Autor:</strong> ' . $author . '</p>
-        <p><strong>Publicado em:</strong> ' . $publishedAt . '</p>
+        <p><strong>Criado em:</strong> ' . $publishedAt . '</p>
         <p><strong>Atualizado em:</strong> ' . $updatedAt . '</p>
         <p><strong>Resumo:</strong></p>
         <div>' . $contentSummary . '</div>
