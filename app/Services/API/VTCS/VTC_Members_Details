@@ -87,7 +87,7 @@ echo '
 
 echo '
             <p><strong>Usuario:</strong> ' . $username . '</p>
-            <p><strong>Regra:</strong> ' . $membersrole . '</p>
+            <p><strong>Papel:</strong> ' . $membersrole . '</p>
             <p><strong>TruckersMP ID:</strong> ' . $membersuser_id . '</p>
             <p><strong>Steam ID:</strong> ' . $memberssteam_id . '</p>
             <p><strong>Data de entrada:</strong></p><div>' . $updatedAt . '</div>';
