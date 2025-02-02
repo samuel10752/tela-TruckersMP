@@ -1,0 +1,143 @@
+<?php
+// Incluir o Parsedown (certifique-se de que ele esteja instalado via Composer)
+require 'vendor/autoload.php';
+$parsedown = new Parsedown();
+
+// Verificar se o ID foi passado na URL
+if (!isset($_GET['id']) || !is_numeric($_GET['id'])) {
+    echo "<p>ID do VTC inválido.</p>";
+    exit;
+}
+
+// Capturar o ID do VTC
+$vtcId = intval($_GET['id']);
+$vtcUrl = "https://api.truckersmp.com/v2/vtc/{$vtcId}/events";
+
+// Configurar timeout para a requisição
+$options = [
+    "http" => [
+        "timeout" => 10, // Timeout de 10 segundos
+    ],
+];
+$context = stream_context_create($options);
+
+// Obter dados do VTC
+$jsonVTC = @file_get_contents($vtcUrl, false, $context);
+if (!$jsonVTC) {
+    echo "<p>Erro ao obter os dados da API do VTC. A API pode estar indisponível. Tente novamente mais tarde.</p>";
+    exit;
+}
+
+$dataVTC = json_decode($jsonVTC, true);
+
+// Início do Swiper
+echo '<section class="section swiper-container swiper-slider swiper-slider-classic"
+            data-loop="true"
+            data-autoplay="6859"
+            data-simulate-touch="true"
+            data-direction="vertical"
+            data-nav="false">
+        <div class="swiper-wrapper text-center">';
+
+// Verificar se os dados do VTC foram retornados
+if ($dataVTC && isset($dataVTC['response'])) {
+    // Iterar sobre a lista de eventos
+    foreach ($dataVTC['response'] as $event) {
+        // Verificar se o evento tem um VTC associado
+        if (isset($event['id'])) {
+            // CAMPOS PRINCIPAIS DO EVENTO
+            $eventId = $event['id'];
+            $eventName = htmlspecialchars($event['name'] ?? 'Nome Desconhecido');
+            $eventGame = htmlspecialchars($event['game'] ?? 'Desconhecido');
+            $eventServer = htmlspecialchars($event['server']['name'] ?? 'Desconhecido');
+            $eventLanguage = htmlspecialchars($event['language'] ?? 'Desconhecido');
+            $eventUpdated = htmlspecialchars($event['updated_at'] ?? 'Desconhecido');
+            $eventDepartureLocation = htmlspecialchars($event['departure']['location'] ?? 'Desconhecido');
+            $eventDepartureCity = htmlspecialchars($event['departure']['city'] ?? 'Desconhecido');
+            $eventArrivalLocation = htmlspecialchars($event['arrive']['location'] ?? 'Desconhecido');
+            $eventArrivalCity = htmlspecialchars($event['arrive']['city'] ?? 'Desconhecido');
+            $eventStartAt = htmlspecialchars($event['start_at'] ?? 'Desconhecido');
+            $eventBanner = htmlspecialchars($event['banner'] ?? '/public/images/Banner/Eventos/banner.jpg');
+
+            // Exibição dos detalhes do VTC
+            echo '<div class="swiper-slide" data-slide-bg="' . htmlspecialchars($eventBanner) . '">
+                    <div class="swiper-slide-caption section-md">
+                      <div class="container">
+                        <h1 data-caption-animate="fadeInLeft" data-caption-delay="0">' . htmlspecialchars($eventName) . '</h1>
+                        <br><br><br><br><br><br>
+
+                        <p class="text-width-large" data-caption-animate="fadeInRight" data-caption-delay="100">
+                          <strong>Jogo:</strong> ' . htmlspecialchars($eventGame) . '
+                        </p>
+                        
+                        <p class="text-width-large" data-caption-animate="fadeInRight" data-caption-delay="100">
+                          <strong>Língua:</strong> ' . htmlspecialchars($eventLanguage) . '
+                        </p>
+
+                        <p class="text-width-large" data-caption-animate="fadeInRight" data-caption-delay="100">
+                          <strong>Servidor:</strong> ' . htmlspecialchars($eventServer) . '
+                        </p>
+
+                        <p class="text-width-large" data-caption-animate="fadeInRight" data-caption-delay="100">
+                          <strong>Partida:</strong> ' . htmlspecialchars($eventDepartureCity) . ' (' . htmlspecialchars($eventDepartureLocation) . ')
+                        </p>
+
+                        <p class="text-width-large" data-caption-animate="fadeInRight" data-caption-delay="100">
+                          <strong>Destino:</strong> ' . htmlspecialchars($eventArrivalCity) . ' (' . htmlspecialchars($eventArrivalLocation) . ')
+                        </p>
+
+                        <p class="text-width-large" data-caption-animate="fadeInRight" data-caption-delay="100">
+                          <strong>Hora do encontro:</strong> ' . htmlspecialchars($eventStartAt) . '
+                        </p>
+
+                        <a class="button button-primary button-ujarak" href="detalhes_evento.php?id=' . $vtcId . '&event_id=' . $eventId . '" data-caption-animate="fadeInUp" data-caption-delay="200">
+                          Ver detalhes
+                        </a>
+                      </div>
+                    </div>
+                  </div>';
+        } else {
+            echo "<p>Detalhes do VTC não encontrados. Verifique se o ID do VTC é válido.</p>";
+            exit;
+        }
+    }
+} else {
+    echo "<p>Erro ao obter os dados do VTC.</p>";
+}
+
+echo '</div>
+      </section>
+
+<style>
+.swiper-container {
+    width: 100%;
+    height: 100%;
+}
+.swiper-slide {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+}
+.swiper-slide[data-slide-bg] {
+    background-size: cover;
+    background-position: center;
+}
+.content {
+    padding: 20px;
+}
+.button-ujarak {
+    display: inline-block;
+    padding: 10px 20px;
+    background: #576eff;
+    color: #fff;
+    text-decoration: none;
+    border-radius: 4px;
+    text-align: center;
+    transition: background 0.3s;
+}
+.button-ujarak:hover {
+    background: #4655cc;
+}
+</style> ';
