@@ -55,6 +55,7 @@ if ($dataVTC && isset($dataVTC['response'])) {
     $vtcnewsId = ($vtcType === 'event') ? "VTC_Roles?id={$vtcrolesId}" : "VTC_News?id={$vtcId}";
     $vtcrolesId = ($vtcType === 'event') ? "VTC_Roles?id={$vtcrolesId}" : "VTC_Roles?id={$vtcId}";
     $vtcmenbrosId = ($vtcType === 'event') ? "VTC_Members?id={$vtcmenbrosId}" : "VTC_Members?id={$vtcId}";
+    $vtceventsId = ($vtcType === 'event') ? "VTC_Events?id={$vtceventsId}" : "VTC_Events?id={$vtcId}";
     $games = $vtc['games'] ?? [];
 
     // Rede sociais
@@ -66,27 +67,9 @@ if ($dataVTC && isset($dataVTC['response'])) {
 
 // Exibição dos detalhes do VTC
 echo '
-<!DOCTYPE html>
-<html lang="pt-BR">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Detalhes do VTC - ' . $vtcName . '</title>
+
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #121212;
-            color: #e0e0e0;
-            margin: 0;
-            padding: 0;
-        }
-        .container {
-            max-width: 1200px;
-            margin: 40px auto;
-            padding: 20px;
-            background: #1e1e1e;
-            border-radius: 8px;
-        }
+
         .vtc-banner {
             width: 100%;
             height: 400px;
@@ -109,9 +92,7 @@ echo '
         .content {
             text-align: center;
         }
-        h1, h2 {
-            margin-bottom: 20px;
-        }
+
         .social-links a {
             display: inline-block;
             margin: 0 10px;
@@ -203,8 +184,7 @@ echo '
         }
       }
     </style>
-</head>
-<body>
+
     <div class="container">
         <div class="vtc-banner"></div>
         <div class="content">
@@ -297,6 +277,23 @@ echo '
                         </a>
                     </div>
                 </div>
+                <div class="five-columns-item"
+                     style="background-image: url(\'' . htmlspecialchars($banner) . '\');
+                            background-size: cover;
+                            background-position: center;
+                            background-repeat: no-repeat;">
+                    <div>
+                        <h3 class="box-icon-modern-big-title" style="margin: 0;">
+                            Eventos
+                        </h3>
+                        <br><br><br>
+                        <div class="box-icon-modern-decor" style="margin: 10px auto;"></div>
+                        <a class="button-ujarak" 
+                           href="' . htmlspecialchars($vtceventsId) . '">
+                            Ver Detalhes
+                        </a>
+                    </div>
+                </div>
             </div>
             
         </section>
@@ -317,6 +314,5 @@ echo '
         </div>
         
     </div>
-</body>
-</html>
+
 ';
