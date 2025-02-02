@@ -68,20 +68,10 @@ if ($data && isset($data['response'])) {
 
 // Exibição dos detalhes do evento
 echo '
-<!DOCTYPE html>
-<html lang="pt-BR">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <title>Detalhes do Evento - ' . $eventName . '</title>
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #121212;
-            color: #e0e0e0;
-            margin: 0;
-            padding: 0;
-        }
+
         .container {
             max-width: 1200px;
             margin: 40px auto;
