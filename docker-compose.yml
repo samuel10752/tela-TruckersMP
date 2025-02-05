@@ -5,7 +5,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    container_name: Tela-Truckers
+    container_name: Tela-Truckers-novo
     ports:
       - "80:80"
     volumes:
