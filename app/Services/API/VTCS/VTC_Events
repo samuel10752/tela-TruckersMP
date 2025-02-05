@@ -90,7 +90,7 @@ if ($dataVTC && isset($dataVTC['response'])) {
                           <strong>Hora do encontro:</strong> ' . htmlspecialchars($eventStartAt) . '
                         </p>
 
-                        <a class="button button-primary button-ujarak" href="detalhes_evento.php?id=' . $vtcId . '&event_id=' . $eventId . '" data-caption-animate="fadeInUp" data-caption-delay="200">
+                        <a class="button button-primary button-ujarak" href="VTC_Events_Details?id=' . $vtcId . '&event_id=' . $eventId . '" data-caption-animate="fadeInUp" data-caption-delay="200">
                           Ver detalhes
                         </a>
                       </div>

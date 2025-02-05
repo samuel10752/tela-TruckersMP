@@ -123,7 +123,7 @@ if ($dataVTC && isset($dataVTC['response']) && is_array($dataVTC['response'])) {
             $eventId = $event['id'];
             $eventName = htmlspecialchars($event['name'] ?? 'Nome Desconhecido');
             $eventBanner = htmlspecialchars($event['banner'] ?? '/public/images/Banner/Eventos/banner.jpg');
-            $eventUrl = "detalhes_evento.php?id={$vtcId}&event_id={$eventId}";
+            $eventUrl = "VTC_Events_Details?id={$vtcId}&event_id={$eventId}";
 
             // Coluna de evento
             echo '
