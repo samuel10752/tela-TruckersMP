@@ -35,7 +35,7 @@ if ($data && isset($data['response'])) {
     $event = $data['response'];
 
     // CAMPOS PRINCIPAIS
-    $eventName = htmlspecialchars($event['name'] ?? 'Evento Desconhecido');
+    $eventName = htmlspecialchars($event['name'] ?? 'Nome do Desconhecido');
     $banner = htmlspecialchars($event['banner'] ?? '/public/images/Banner/Eventos/ets-ats.jpg');
     $game = htmlspecialchars($event['game'] ?? 'Game Desconhecido');
     $language = htmlspecialchars($event['language'] ?? 'Idioma não especificado');
@@ -55,8 +55,8 @@ if ($data && isset($data['response'])) {
     $featured = htmlspecialchars($event['featured'] ?? 'Não especificado');
 
     // ARRAYS
-    $vtc = $event['vtc']['name'] ?? [];
-    $server = $event['server']['name'] ?? [];
+    $vtc = htmlspecialchars($event['vtc']['name'] ?? 'Não especificado');
+    $server =  htmlspecialchars($event['server']['name'] ?? 'Não especificado');
     $confirmedUsers = $event['attendances']['confirmed_users'] ?? [];
     $unsureUsers = $event['attendances']['unsure_users'] ?? [];
     $confirmedVtcs = $event['attendances']['confirmed_vtcs'] ?? [];
